@@ -38,7 +38,7 @@ function export_install()
     $sql = "
     CREATE TABLE IF NOT EXISTS `{$db->prefix}export_snapshots` (
         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        `date` DATETIME NOT NULL,
+        `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `archive` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
         `process` INT UNSIGNED NOT NULL,
         PRIMARY KEY (`id`)

@@ -24,7 +24,7 @@ head($head);
 
 <h1><?php echo $head['title'];?></h1>
 
-<p id="new-export" class="add-button"><a href="<?php echo uri('export/index/export'); ?>" class="add">Make a Snapshot</a></p>
+<p id="new-export" class="add-button"><a href="<?php echo uri('export/index/snapshot'); ?>" class="add">Make a Snapshot</a></p>
 
 <div id="primary">
 
@@ -36,6 +36,13 @@ head($head);
     <th>Status</th>
     <th>Download</th>
 </thead>
+<?php foreach ($snapshots as $snapshot): ?>
+<tr>
+    <td><?php echo $snapshot->date; ?></td>
+    <td></td>
+    <td></td>
+</tr>
+<?php endforeach; ?>
 </table>
 </div>
 

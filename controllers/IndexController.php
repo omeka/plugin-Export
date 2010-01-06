@@ -19,14 +19,20 @@ class Export_IndexController extends Omeka_Controller_Action
      */
     public function indexAction()
     {
+        $snapshots = get_db()->getTable('ExportSnapshot')->findAll();
+        $this->view->snapshots = $snapshots;
     }
     
     /**
      * 
      */
-    public function exportAction()
+    public function snapshotAction()
     {
-        ProcessDispatcher::startProcess('Export_Exporter');
+        $process = ProcessDispatcher::startProcess('Export_Exporter');
+        $snapshot = new ExportSnapshot;
+        $snapshot->process = $process->id;
+        $snapshot->save();
+        
         $this->redirect->goto('index');
     }
 }
