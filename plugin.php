@@ -16,8 +16,8 @@ define('EXPORT_SAVE_DIRECTORY', get_option('export_save_directory'));
 
 add_plugin_hook('install', 'export_install');
 add_plugin_hook('uninstall', 'export_uninstall');
-add_plugin_hook('config_form', 'export_config_form');
-add_plugin_hook('config', 'export_config');
+//add_plugin_hook('config_form', 'export_config_form');
+//add_plugin_hook('config', 'export_config');
 add_filter('admin_navigation_main', 'export_admin_navigation_main');
 
 /**
