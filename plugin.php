@@ -11,13 +11,12 @@
  */
 
 define('EXPORT_PLUGIN_DIRECTORY', dirname(__FILE__));
-
 define('EXPORT_SAVE_DIRECTORY', get_option('export_save_directory'));
 
 add_plugin_hook('install', 'export_install');
 add_plugin_hook('uninstall', 'export_uninstall');
-//add_plugin_hook('config_form', 'export_config_form');
-//add_plugin_hook('config', 'export_config');
+add_plugin_hook('config_form', 'export_config_form');
+add_plugin_hook('config', 'export_config');
 add_filter('admin_navigation_main', 'export_admin_navigation_main');
 
 /**
@@ -25,9 +24,27 @@ add_filter('admin_navigation_main', 'export_admin_navigation_main');
  */
 function export_install()
 {    
-    set_option('export_save_directory', REPORTS_PLUGIN_DIRECTORY.
-                                         DIRECTORY_SEPARATOR.
-                                         'exports');
+    set_option('export_save_directory', EXPORT_PLUGIN_DIRECTORY . DIRECTORY_SEPARATOR. 'snapshots');
+    
+    $db = get_db();
+    
+    /* Table: export_snapshots
+    
+        id: Primary key
+        date: Date of snapshot
+        archive: Filename of archive on server
+        process: ID of associated background process
+    */
+    $sql = "
+    CREATE TABLE IF NOT EXISTS `{$db->prefix}export_snapshots` (
+        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        `date` DATETIME NOT NULL,
+        `archive` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
+        `process` INT UNSIGNED NOT NULL,
+        PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+    
+    $db->query($sql);
 }
 
 /**
@@ -36,6 +53,11 @@ function export_install()
 function export_uninstall()
 {
     delete_option('export_save_directory');
+    
+    $db = get_db();
+    
+    $sql = "DROP TABLE IF EXISTS `{$db->prefix}export_snapshots`;";
+    $db->query($sql);
 }
 
 /**
