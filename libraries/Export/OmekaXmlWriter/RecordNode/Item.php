@@ -1,6 +1,7 @@
 <?php
 
-class Export_OmekaXmlWriter_Node_Item extends Omeka_Output_Xml_Item {
+class Export_OmekaXmlWriter_RecordNode_Item extends Omeka_Output_Xml_Item {
+    // This is all out of date.
     protected function _setRootElement($rootElement) {
         return $rootElement;
     }
