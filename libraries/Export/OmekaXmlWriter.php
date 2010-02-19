@@ -32,7 +32,7 @@ class Export_OmekaXmlWriter
         if ($writer = $this->writer) {
             $writer->startDocument('1.0', 'utf-8');
             $writer->startElementNS(null, 'repository', self::OMEKA_XML_NAMESPACE);
-            $writer->writeAttributeNS('xsi', 'schemaLocation', self::XSI_NAMESPACE, self::OMEKA_XML_SCHEMA_URI);
+            $writer->writeAttributeNS('xsi', 'schemaLocation', self::XSI_NAMESPACE, self::OMEKA_XML_NAMESPACE . ' ' . self::OMEKA_XML_SCHEMA_URI);
             $this->writeRepositoryMetadata();
             $this->writeItemContainer();
             $this->writeEntityContainer();
