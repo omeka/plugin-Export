@@ -33,7 +33,7 @@ class Export_Exporter extends ProcessAbstract
      */
     private function createXmlDocument($directory) 
     {
-        $xmlWriter = new Export_OmekaXmlWriter($directory);
+        $xmlWriter = new Export_OmekaXmlWriter_Document($directory);
         $xmlWriter->writeDocument();
     }
     

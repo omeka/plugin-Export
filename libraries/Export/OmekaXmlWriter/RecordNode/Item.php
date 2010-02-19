@@ -1,6 +1,6 @@
 <?php
 
-class Export_OmekaXmlItem extends Omeka_Output_Xml_Item {
+class Export_OmekaXmlWriter_Node_Item extends Omeka_Output_Xml_Item {
     protected function _setRootElement($rootElement) {
         return $rootElement;
     }
