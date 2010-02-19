@@ -32,6 +32,7 @@ class Export_OmekaXmlWriter_Document
             $writer->endDocument();
             $writer->flush();
         }
+        return self::DOCUMENT_FILENAME;
     }
 
     /**

@@ -10,7 +10,8 @@ class Export_Exporter extends ProcessAbstract
     public function run($args) 
     {
         $directory = $this->createDirectory();
-        $this->createXmlDocument($directory);
+        $document = $this->createXmlDocument($directory);
+        $this->createArchive(array($document));
     }
     
     /**
@@ -34,10 +35,10 @@ class Export_Exporter extends ProcessAbstract
     private function createXmlDocument($directory) 
     {
         $xmlWriter = new Export_OmekaXmlWriter_Document($directory);
-        $xmlWriter->writeDocument();
+        return $directory . DIRECTORY_SEPARATOR . $xmlWriter->writeDocument();
     }
     
-    private function createArchive($directory)
+    private function createArchive($paths)
     {
         
     }
