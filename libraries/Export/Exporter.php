@@ -40,7 +40,15 @@ class Export_Exporter extends ProcessAbstract
     
     private function createArchive($paths)
     {
+        $zipBinPath = $this->getZipBinPath();
         
+    }
+    
+    private function getZipBinPath()
+    {
+        $command = 'which zip 2>&0';
+        $lastLineOutput = exec($command, $output, $exitCode);
+        return $exitCode == 0 ? $lastLineOutput : false;
     }
     
     /**
