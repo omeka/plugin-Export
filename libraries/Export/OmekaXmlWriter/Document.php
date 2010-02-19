@@ -28,7 +28,7 @@ class Export_OmekaXmlWriter_Document
         if ($writer = $this->writer) {
             $writer->startDocument('1.0', 'utf-8');
             $repository = new Export_OmekaXmlWriter_Container_Repository($writer);
-            $repository->writeContainer();
+            $repository->writeNode();
             $writer->endDocument();
             $writer->flush();
         }

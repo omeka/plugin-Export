@@ -1,21 +1,23 @@
 <?php
 
 class Export_OmekaXmlWriter_Container_Repository extends Export_OmekaXmlWriter_Container
-{
+{    
+    protected function getContainerName()
+    {
+        return 'repository';
+    }
+    
     protected function startContainer()
     {
-        $writer->startElementNS(null, 'repository', self::OMEKA_XML_NAMESPACE);
-        $writer->writeAttributeNS('xsi', 'schemaLocation', self::XSI_NAMESPACE, self::OMEKA_XML_NAMESPACE . ' ' . self::OMEKA_XML_SCHEMA_URI);
+        $this->writer->startElementNS(null, 'repository', self::OMEKA_XML_NAMESPACE);
+        $this->writer->writeAttributeNS('xsi', 'schemaLocation', self::XSI_NAMESPACE, self::OMEKA_XML_NAMESPACE . ' ' . self::OMEKA_XML_SCHEMA_URI);
     }
     
     protected function writeContents()
     {
-        $this->writeRepostioryMetadata();
-    }
-    
-    protected function endContainer()
-    {
-        $writer->endElement();   
+        $this->writeRepositoryMetadata();
+        $entityContainer = new Export_OmekaXmlWriter_Container_Entity($this->writer);
+        $entityContainer->writeNode();
     }
     
     /**

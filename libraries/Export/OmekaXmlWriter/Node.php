@@ -12,4 +12,6 @@ abstract class Export_OmekaXmlWriter_Node
     {
         $this->writer = $writer;
     }
+    
+    abstract public function writeNode();
 }

@@ -2,16 +2,24 @@
 
 abstract class Export_OmekaXmlWriter_Container extends Export_OmekaXmlWriter_Node
 {
-    public function writeContainer()
+    public function writeNode()
     {
         $this->startContainer();
         $this->writeContents();
         $this->endContainer();
     }
     
-    abstract protected function startContainer();
+    protected function startContainer()
+    {
+        $this->writer->startElement($this->getContainerName());
+    }
     
-    abstract protected function endContainer();
+    protected function endContainer()
+    {
+        $this->writer->endElement();
+    }
     
     abstract protected function writeContents();
+    
+    abstract protected function getContainerName();
 }
