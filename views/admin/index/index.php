@@ -1,11 +1,4 @@
 <?php
-
-/*$exporter = new Export_OmekaXmlWriter();
-$exporter->writeDocument();*/
-
-/*ProcessDispatcher::startProcess('Export_Exporter');*/
-?>
-<?php
 /**
  * Admin page index view
  *
@@ -38,7 +31,7 @@ head($head);
 </thead>
 <?php foreach ($snapshots as $snapshot): ?>
 <tr>
-    <td><?php echo $snapshot->date; ?></td>
+    <td><?php echo date('F d, Y G:i:s O', strtotime($snapshot->date)); ?></td>
     <td></td>
     <td></td>
 </tr>
