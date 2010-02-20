@@ -10,20 +10,13 @@ class Export_OmekaXmlWriter_Record_Entity extends Export_OmekaXmlWriter_Record
         $writer->startElement('entity');
         
         $writer->writeAttribute('entityId', $record->id);
-        if($firstName = $record->first_name) {
-            $writer->writeElement('firstName', $firstName);
-        }
-        if($middleName = $record->middle_name) {
-            $writer->writeElement('middleName', $middleName);
-        }
-        if($lastName = $record->last_name) {
-            $writer->writeElement('lastName', $lastName);
-        }
-        if($email = $record->email) {
-            $writer->writeElement('email', $email);
-        }
-        if($institution = $record->institution) {
-            $writer->writeElement('institution', $institution);
+        
+        if ($this->fullOutput) {
+            $this->writeElementIfExists('firstName', $record->first_name);
+            $this->writeElementIfExists('middleName', $record->middle_name);
+            $this->writeElementIfExists('lastName', $record->last_name);
+            $this->writeElementIfExists('email', $record->email);
+            $this->writeElementIfExists('institution', $record->institution);
         }
         
         $writer->endElement();
