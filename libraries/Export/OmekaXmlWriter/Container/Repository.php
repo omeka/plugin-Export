@@ -16,6 +16,8 @@ class Export_OmekaXmlWriter_Container_Repository extends Export_OmekaXmlWriter_C
     protected function writeContents()
     {
         $this->writeRepositoryMetadata();
+        $elementSetContainer = new Export_OmekaXmlWriter_Container_ElementSet($this->writer);
+        $elementSetContainer->writeNode();
         $entityContainer = new Export_OmekaXmlWriter_Container_Entity($this->writer);
         $entityContainer->writeNode();
     }
