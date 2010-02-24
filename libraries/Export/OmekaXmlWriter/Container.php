@@ -2,6 +2,14 @@
 
 abstract class Export_OmekaXmlWriter_Container extends Export_OmekaXmlWriter_Node
 {
+    protected $records;
+    
+    public function __construct($writer, $records = null)
+    {
+        parent::__construct($writer);
+        $this->records = $records;
+    }
+    
     public function writeNode()
     {
         $this->startContainer();
@@ -17,6 +25,7 @@ abstract class Export_OmekaXmlWriter_Container extends Export_OmekaXmlWriter_Nod
     protected function endContainer()
     {
         $this->writer->endElement();
+        $this->writer->flush();
     }
     
     abstract protected function writeContents();
