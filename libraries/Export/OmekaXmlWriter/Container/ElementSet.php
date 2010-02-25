@@ -9,14 +9,11 @@ class Export_OmekaXmlWriter_Container_ElementSet extends Export_OmekaXmlWriter_C
     
     protected function writeContents()
     {
-        $db = get_db();
-        $table = $db->getTable('ElementSet');
-        //echo var_dump($table);
-        
-        $elementSets = $table->findAll();
-        foreach($elementSets as $elementSet) {
-            $elementSetNode = new Export_OmekaXmlWriter_Record_ElementSet($this->writer, $elementSet);
-            $elementSetNode->writeNode();
+        while ($records = $this->getNextRecords('ElementSet') ) {
+            foreach ($records as $record) {
+                $recordNode = new Export_OmekaXmlWriter_Record_ElementSet($this->writer, $record);
+                $recordNode->writeNode();
+            }
         }
     }
 }

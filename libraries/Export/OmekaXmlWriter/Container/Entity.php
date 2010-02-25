@@ -9,14 +9,11 @@ class Export_OmekaXmlWriter_Container_Entity extends Export_OmekaXmlWriter_Conta
     
     protected function writeContents()
     {   
-        $db = get_db();
-        $table = $db->getTable('Entity');
-        
-        $entities = $table->findAll();
-        foreach($entities as $entity) {
-            $entityNode = new Export_OmekaXmlWriter_Record_Entity($this->writer, $entity);
-            echo 'an entity';
-            $entityNode->writeNode();
+        while ($records = $this->getNextRecords('Entity') ) {
+            foreach ($records as $record) {
+                $recordNode = new Export_OmekaXmlWriter_Record_Entity($this->writer, $record);
+                $recordNode->writeNode();
+            }
         }
     }
 }
