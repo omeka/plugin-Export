@@ -11,11 +11,4 @@ abstract class Export_OmekaXmlWriter_Record extends Export_OmekaXmlWriter_Node
         $this->record = $record;
         $this->fullOutput = $fullOutput;
     }
-    
-    protected function writeElementIfExists($elementName, $elementContents)
-    {
-        if ($elementContents) {
-            $this->writer->writeElement($elementName, $elementContents);
-        }
-    }
 }

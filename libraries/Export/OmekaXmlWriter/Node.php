@@ -13,5 +13,12 @@ abstract class Export_OmekaXmlWriter_Node
         $this->writer = $writer;
     }
     
+    protected function writeElementIfExists($elementName, $elementContents)
+    {
+        if ($elementContents) {
+            $this->writer->writeElement($elementName, $elementContents);
+        }
+    }
+    
     abstract public function writeNode();
 }
