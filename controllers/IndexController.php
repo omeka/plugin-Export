@@ -28,11 +28,26 @@ class Export_IndexController extends Omeka_Controller_Action
      */
     public function snapshotAction()
     {
-        $process = ProcessDispatcher::startProcess('Export_Exporter');
         $snapshot = new ExportSnapshot;
+        $snapshot->process = 0;
+        $snapshot->save();
+        $process = ProcessDispatcher::startProcess('Export_Exporter', null, array('snapshotId' => $snapshot->id));
+        
         $snapshot->process = $process->id;
         $snapshot->save();
         
         $this->redirect->goto('index');
+    }
+    
+    public function downloadAction()
+    {
+        $id = $_GET['id'];
+        $snapshot = get_db()->getTable('ExportSnapshot')->find($id);
+        
+        if($snapshot) {
+            $this->view->snapshot = $snapshot;
+        } else {
+            $this->redirect->goto('index');
+        }
     }
 }

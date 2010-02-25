@@ -30,10 +30,14 @@ head($head);
     <th>Download</th>
 </thead>
 <?php foreach ($snapshots as $snapshot): ?>
+<?php 
+    $process = get_db()->getTable('Process')->find($snapshot->process); 
+    
+?>
 <tr>
     <td><?php echo date('F d, Y G:i:s O', strtotime($snapshot->date)); ?></td>
-    <td></td>
-    <td></td>
+    <td><?php echo ucwords($process->status); ?></td>
+    <td><?php if ($process->status == 'completed'): ?><a href="<?php echo uri('export/index/download')."?id=$snapshot->id" ?>">Download</a><?php endif; ?></td>
 </tr>
 <?php endforeach; ?>
 </table>
