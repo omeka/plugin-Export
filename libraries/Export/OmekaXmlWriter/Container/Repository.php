@@ -16,8 +16,14 @@ class Export_OmekaXmlWriter_Container_Repository extends Export_OmekaXmlWriter_C
     protected function writeContents()
     {
         $this->writeRepositoryMetadata();
+        $itemContainer = new Export_OmekaXmlWriter_Container_Item($this->writer);
+        $itemContainer->writeNode();
+        $collectionContainer = new Export_OmekaXmlWriter_Container_Collection($this->writer);
+        $collectionContainer->writeNode();
         $elementSetContainer = new Export_OmekaXmlWriter_Container_ElementSet($this->writer);
         $elementSetContainer->writeNode();
+        $tagContainer = new Export_OmekaXmlWriter_Container_Tag($this->writer);
+        $tagContainer->writeNode();
         $entityContainer = new Export_OmekaXmlWriter_Container_Entity($this->writer);
         $entityContainer->writeNode();
     }
@@ -30,18 +36,10 @@ class Export_OmekaXmlWriter_Container_Repository extends Export_OmekaXmlWriter_C
         if ($writer = $this->writer) {
             $writer->writeAttribute('accessDate', date('c'));
             
-            if ($title = get_option('site_title')) {
-                $writer->writeElement('title', $title);
-            }
-            if ($copyright = get_option('copyright')) {
-                $writer->writeElement('copyright', $copyright);
-            }
-            if ($author = get_option('author')) {
-                $writer->writeElement('author', $author);
-            }
-            if ($description = get_option('description')) {
-                $writer->writeElement('description', $description);
-            }
+            $this->writeElementIfExists('title', get_option('site_title'));
+            $this->writeElementIfExists('copyright', get_option('copyright'));
+            $this->writeElementIfExists('author', get_option('author'));
+            $this->writeElementIfExists('description', get_option('description'));
         }
     }
 }
