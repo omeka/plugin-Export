@@ -18,6 +18,7 @@ class Export_OmekaXmlWriter_Document
     public function __construct($directory) {
         $this->writer = new XmlWriter();
         $this->writer->openURI($directory . DIRECTORY_SEPARATOR . self::DOCUMENT_FILENAME);
+        $this->writer->setIndent(true);
     }
     
     /**
