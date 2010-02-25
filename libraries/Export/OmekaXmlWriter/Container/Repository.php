@@ -20,6 +20,8 @@ class Export_OmekaXmlWriter_Container_Repository extends Export_OmekaXmlWriter_C
         $itemContainer->writeNode();
         $collectionContainer = new Export_OmekaXmlWriter_Container_Collection($this->writer);
         $collectionContainer->writeNode();
+        $itemTypeContainer = new Export_OmekaXmlWriter_Container_ItemType($this->writer);
+        $itemTypeContainer->writeNode();
         $elementSetContainer = new Export_OmekaXmlWriter_Container_ElementSet($this->writer);
         $elementSetContainer->writeNode();
         $tagContainer = new Export_OmekaXmlWriter_Container_Tag($this->writer);
