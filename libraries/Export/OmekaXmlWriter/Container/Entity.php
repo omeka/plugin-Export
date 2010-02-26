@@ -13,6 +13,7 @@ class Export_OmekaXmlWriter_Container_Entity extends Export_OmekaXmlWriter_Conta
             foreach ($records as $record) {
                 $recordNode = new Export_OmekaXmlWriter_Record_Entity($this->writer, $record);
                 $recordNode->writeNode();
+                release_object($record);
             }
         }
     }
