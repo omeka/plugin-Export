@@ -23,12 +23,8 @@ class Export_OmekaXmlWriter_Record_File extends Export_OmekaXmlWriter_Record {
                     foreach ($elements as $elementId => $elementTexts) {
                         $writer->startElement('element');
                         $writer->writeAttribute('elementId', $elementId);
-                        foreach ($elementTexts as $elementText) {
-                            $writer->startElement('elementText');
-                            $writer->writeAttribute('elementTextId', $elementText->id);
-                            $writer->writeElement('text', $elementText->text);
-                            $writer->endElement();
-                        }
+                        $elementTextContainer = new Export_OmekaXmlWriter_Container_ElementText($writer, $elementTexts);
+                        $elementTextContainer->writeNode();
                         $writer->endElement();
                     }
                     $writer->endElement();
