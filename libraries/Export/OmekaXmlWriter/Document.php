@@ -1,8 +1,9 @@
 <?php
-ini_set('display_errors', '1');
-
 /**
- * Creates an omeka-xml instance for the entire repository.
+ * @package Export
+ * @subpackage OmekaXmlWriter
+ * @copyright Copyright (c) 2009-2010 Center for History and New Media
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 class Export_OmekaXmlWriter_Document
 {
