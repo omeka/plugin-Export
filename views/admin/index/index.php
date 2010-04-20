@@ -10,6 +10,18 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
+function formatBytes($bytes, $precision = 2) { 
+    $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
+       
+    $bytes = max($bytes, 0); 
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
+    $pow = min($pow, count($units) - 1); 
+                      
+    $bytes /= pow(1024, $pow); 
+                             
+    return round($bytes, $precision) . ' ' . $units[$pow]; 
+} 
+
 $head = array('body_class' => 'export primary',
               'title'      => 'Export');
 head($head);
@@ -27,7 +39,8 @@ head($head);
 <thead>
     <th>Date</th>
     <th>Status</th>
-    <th>Download</th>
+    <th>Size</th>
+    <th colspan="2">Actions</th>
 </thead>
 <?php foreach ($snapshots as $snapshot): ?>
 <?php 
@@ -37,7 +50,9 @@ head($head);
 <tr>
     <td><?php echo date('F d, Y G:i:s O', strtotime($snapshot->date)); ?></td>
     <td><?php echo ucwords($process->status); ?></td>
-    <td><?php if ($process->status == 'completed'): ?><a href="<?php echo uri('export/index/download')."?id=$snapshot->id" ?>">Download</a><?php endif; ?></td>
+    <td><?php echo formatBytes(filesize($snapshot->archive)) ?></td>
+    <td><?php if ($process->status == 'completed'): ?><a href="<?php echo uri('export/index/download')."?id=$snapshot->id" ?>" class="add-file">Download</a><?php endif; ?></td>
+    <td><?php if ($process->status == 'completed'): ?><a href="<?php echo uri('export/index/delete')."?id=$snapshot->id" ?>" class="delete">Delete</a><?php endif; ?></td>
 </tr>
 <?php endforeach; ?>
 </table>
