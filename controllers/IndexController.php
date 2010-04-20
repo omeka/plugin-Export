@@ -19,6 +19,7 @@ class Export_IndexController extends Omeka_Controller_Action
      */
     public function indexAction()
     {
+        $this->isDirectoryWritable();
         $snapshots = get_db()->getTable('ExportSnapshot')->findAll();
         $this->view->snapshots = $snapshots;
     }
@@ -28,14 +29,15 @@ class Export_IndexController extends Omeka_Controller_Action
      */
     public function snapshotAction()
     {
-        $snapshot = new ExportSnapshot;
-        $snapshot->process = 0;
-        $snapshot->save();
-        $process = ProcessDispatcher::startProcess('Export_Exporter', null, array('snapshotId' => $snapshot->id));
+        if($this->isDirectoryWritable()) {
+            $snapshot = new ExportSnapshot;
+            $snapshot->process = 0;
+            $snapshot->save();
+            $process = ProcessDispatcher::startProcess('Export_Exporter', null, array('snapshotId' => $snapshot->id));
         
-        $snapshot->process = $process->id;
-        $snapshot->save();
-        
+            $snapshot->process = $process->id;
+            $snapshot->save();
+        }
         $this->redirect->goto('index');
     }
     
@@ -50,4 +52,18 @@ class Export_IndexController extends Omeka_Controller_Action
             $this->redirect->goto('index');
         }
     }
+    
+    private function isDirectoryWritable()
+    {
+        $directory = get_option('export_save_directory');
+        if(!is_writable($directory)) {
+            $this->flashError( "The Export save directory, \"$directory\", is not writable by the server. "
+                        . "You will be unable to create any new snapshots. "
+                        . "Either change the permissions on the directory or choose another directory "
+                        . "in the plugin configuration page.");
+            return false;
+        }
+        return true;
+    }
+    
 }
