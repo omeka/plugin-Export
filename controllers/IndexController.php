@@ -72,6 +72,26 @@ class Export_IndexController extends Omeka_Controller_Action
     }
     
     /**
+     * Action for deleting a created snapshot.
+     */
+    public function deleteAction()
+    {
+        $id = $_GET['id'];
+        $db = get_db();
+        $snapshot = $db->getTable('ExportSnapshot')->find($id);
+        if ($snapshot) {
+            $archive = $snapshot->archive;
+            $snapshot->delete();
+            if (!unlink($archive)) {
+                $this->flash("Error attempting to delete snapshot archive \"$archive\"");
+            }
+        } else {
+            $this->flashError('Unable to find specified snapshot or no snapshot specified.');
+        }
+        $this->redirect->goto('index');
+    }
+    
+    /**
      * Checks if the configured save directory is writable.
      *
      * @return bool True if export_save_directory is server-writable, false otherwise.
