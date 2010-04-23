@@ -23,6 +23,10 @@ head($head);
 
 <?php echo flash(); ?>
 
+<?php if (count($entries) == 0): ?>
+<p>Click "Make a Snapshot" to export a snapshot of this Omeka installation.</p>
+<p>Once created, snapshots will appear here.</p>
+<?php else: ?>
 <table>
 <thead>
     <th>Snapshot Date</th>
@@ -30,6 +34,7 @@ head($head);
     <th>Size</th>
     <th colspan="2">Actions</th>
 </thead>
+
 <?php foreach ($entries as $entry): 
     $id = $entry['id'];
     $status = $entry['status'];
@@ -43,6 +48,7 @@ head($head);
 </tr>
 <?php endforeach; ?>
 </table>
+<?php endif; ?>
 </div>
 
 <?php foot(); ?>
