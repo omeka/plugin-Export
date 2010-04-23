@@ -19,7 +19,7 @@ class Export_IndexController extends Omeka_Controller_Action
      */
     public function indexAction()
     {
-        $this->isDirectoryWritable();
+        $this->canExport();
         $db = get_db();
         $snapshotsTable = $db->getTable('ExportSnapshot')->getTableName();
         $processesTable = $db->getTable('Process')->getTableName();
@@ -44,7 +44,7 @@ class Export_IndexController extends Omeka_Controller_Action
      */
     public function snapshotAction()
     {
-        if ($this->isDirectoryWritable()) {
+        if ($this->canExport()) {
             $snapshot = new ExportSnapshot;
             $snapshot->process = 0;
             $snapshot->save();
@@ -92,21 +92,28 @@ class Export_IndexController extends Omeka_Controller_Action
     }
     
     /**
-     * Checks if the configured save directory is writable.
+     * Checks if the configured save directory is writable, and that the required utilities are available.
+     * Uses flash messages to inform the user about missing requirements.
      *
      * @return bool True if export_save_directory is server-writable, false otherwise.
      */
-    private function isDirectoryWritable()
+    private function canExport()
     {
+        $canExport = true;
         $directory = get_option('export_save_directory');
-        if(!is_writable($directory)) {
+        if (!is_writable($directory)) {
             $this->flashError( "The Export save directory, \"$directory\", is not writable by the server. "
-                        . "You will be unable to create any new snapshots. "
-                        . "Either change the permissions on the directory or choose another directory "
-                        . "in the plugin configuration page.");
-            return false;
+                             . "You will be unable to create any new snapshots. "
+                             . "Either change the permissions on the directory or choose another directory "
+                             . "in the plugin configuration page.");
+            $canExport = false;
         }
-        return true;
+        if (!Export_Exporter::getZipBinPath()) {
+            $this->flashError( 'The "zip" utility was not found on the server or could not be run. '
+                             . 'You will be unable to create any new snapshots.' );
+            $canExport = false;
+        }
+        return $canExport;
     }
     
     /**

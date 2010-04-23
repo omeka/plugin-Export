@@ -60,7 +60,7 @@ class Export_Exporter extends ProcessAbstract
         $zipName = $this->baseDir . DIRECTORY_SEPARATOR . $filter->renameFileForArchive('snapshot.zip');
         $filesToCompress = implode(' ', $paths);
         
-        $zipBinPath = $this->getZipBinPath();
+        $zipBinPath = self::getZipBinPath();
         chdir(ARCHIVE_DIR);
         $command = "$zipBinPath $zipName -r files -x \"*index.html\" -x \"*.svn*\"";
         exec($command);
@@ -70,7 +70,7 @@ class Export_Exporter extends ProcessAbstract
         return $zipName;  
     }
     
-    private function getZipBinPath()
+    public static function getZipBinPath()
     {
         $command = 'which zip 2>&0';
         $lastLineOutput = exec($command, $output, $exitCode);
