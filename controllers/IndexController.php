@@ -20,8 +20,23 @@ class Export_IndexController extends Omeka_Controller_Action
     public function indexAction()
     {
         $this->isDirectoryWritable();
-        $snapshots = get_db()->getTable('ExportSnapshot')->findAll();
-        $this->view->snapshots = $snapshots;
+        $db = get_db();
+        $snapshotsTable = $db->getTable('ExportSnapshot')->getTableName();
+        $processesTable = $db->getTable('Process')->getTableName();
+        // Get status of each export by joining with processes table
+        $query = "SELECT s.*, p.status FROM `$snapshotsTable` AS s JOIN `$processesTable` AS p ON s.process = p.id ORDER BY s.date DESC";
+        $statement = $db->query($query);
+        $snapshotData = $statement->fetchAll(Zend_Db::FETCH_ASSOC);
+        $entries = array();
+        foreach ($snapshotData as $entry) {
+            $entry['displayDate'] = date('F d, Y G:i:s', strtotime($entry['date']));
+            $entry['displayStatus'] = ucwords($entry['status']);
+            if ($entry['status'] == 'completed') { 
+                $entry['displaySize'] = $this->formatBytes(filesize($entry['archive']));
+            }
+            $entries[] = $entry;
+        }
+        $this->view->entries = $entries;
     }
     
     /**
@@ -29,7 +44,7 @@ class Export_IndexController extends Omeka_Controller_Action
      */
     public function snapshotAction()
     {
-        if($this->isDirectoryWritable()) {
+        if ($this->isDirectoryWritable()) {
             $snapshot = new ExportSnapshot;
             $snapshot->process = 0;
             $snapshot->save();
@@ -49,7 +64,7 @@ class Export_IndexController extends Omeka_Controller_Action
         $id = $_GET['id'];
         $snapshot = get_db()->getTable('ExportSnapshot')->find($id);
         
-        if($snapshot) {
+        if ($snapshot) {
             $this->view->snapshot = $snapshot;
         } else {
             $this->redirect->goto('index');
@@ -74,4 +89,22 @@ class Export_IndexController extends Omeka_Controller_Action
         return true;
     }
     
+    /**
+     * Returns a size formatted in a human-readable format.
+     *
+     * @param mixed $bytes Size in bytes
+     * @param int $precision Decimal places to display
+     * @return string Formatted size
+     */
+    private function formatBytes($bytes, $precision = 2) { 
+        $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
+           
+        $bytes = max($bytes, 0); 
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
+        $pow = min($pow, count($units) - 1); 
+                          
+        $bytes /= pow(1024, $pow); 
+                                 
+        return round($bytes, $precision) . ' ' . $units[$pow]; 
+    }
 }
