@@ -38,12 +38,13 @@ head($head);
 <?php foreach ($entries as $entry): 
     $id = $entry['id'];
     $status = $entry['status'];
+    $root = $_SERVER['DOCUMENT_ROOT'];
 ?>
 <tr>
     <td><?php echo $entry['displayDate']; ?></td>
     <td><?php echo $entry['displayStatus']; ?></td>
     <td><?php echo $entry['displaySize']; ?></td>
-    <td><?php if ($status == 'completed'): ?><a href="<?php echo uri('export/index/download')."?id=$id" ?>" class="add-file">Download</a><?php endif; ?></td>
+    <td><?php if ($status == 'completed'): ?><a href="<?php echo str_replace($root, '', $entry['archive']); ?>" class="add-file">Download</a><?php endif; ?></td>
     <td><?php if ($status == 'completed'): ?><a href="<?php echo uri('export/index/delete')."?id=$id" ?>" class="delete">Delete</a><?php endif; ?></td>
 </tr>
 <?php endforeach; ?>
