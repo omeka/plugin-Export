@@ -25,7 +25,7 @@ class Export_IndexController extends Omeka_Controller_Action
     }
     
     /**
-     * 
+     * Action for creating a new snapshot.
      */
     public function snapshotAction()
     {
@@ -41,6 +41,9 @@ class Export_IndexController extends Omeka_Controller_Action
         $this->redirect->goto('index');
     }
     
+    /**
+     * Action for downloading a snapshot.
+     */
     public function downloadAction()
     {
         $id = $_GET['id'];
@@ -53,6 +56,11 @@ class Export_IndexController extends Omeka_Controller_Action
         }
     }
     
+    /**
+     * Checks if the configured save directory is writable.
+     *
+     * @return bool True if export_save_directory is server-writable, false otherwise.
+     */
     private function isDirectoryWritable()
     {
         $directory = get_option('export_save_directory');
