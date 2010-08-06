@@ -14,6 +14,7 @@ class Export_OmekaXmlWriter_Record_Collection extends Export_OmekaXmlWriter_Reco
         $writer->startElement('collection');
         
         $writer->writeAttribute('collectionId', $record->id);
+        Export_OmekaXmlWriter_Helper_PublicFeatured::addAttributes($writer, $record);
         
         if ($this->fullOutput) {
             $this->writeElementIfExists('name', $record->name);

@@ -13,6 +13,7 @@ class Export_OmekaXmlWriter_Record_Item extends Export_OmekaXmlWriter_Record {
         
         $writer->startElement('item');
         $writer->writeAttribute('itemId', $record->id);
+        Export_OmekaXmlWriter_Helper_PublicFeatured::addAttributes($writer, $record);
         
         if ($this->fullOutput) {
             if ($files = $record->getFiles()) {
