@@ -13,7 +13,7 @@ class Export_OmekaXmlWriter_Record_Item extends Export_OmekaXmlWriter_Record {
         
         $writer->startElement('item');
         $writer->writeAttribute('itemId', $record->id);
-        Export_OmekaXmlWriter_Helper_PublicFeatured::addAttributes($writer, $record);
+        Export_OmekaXmlWriter_Helper_PublicFeatured::writeAttributes($writer, $record);
         
         if ($this->fullOutput) {
             if ($files = $record->getFiles()) {
@@ -30,27 +30,8 @@ class Export_OmekaXmlWriter_Record_Item extends Export_OmekaXmlWriter_Record {
                 $itemTypeNode = new Export_OmekaXmlWriter_Record_ItemType($writer, $itemType, false);
                 $itemTypeNode->writeNode();
             }
-            
-            if ($elementTextsByIds = $this->getElementTextsBySetAndElementIds($record)) {
-                $writer->startElement('elementSetContainer');
-                
-                foreach ($elementTextsByIds as $setId => $elements) {
-                    $writer->startElement('elementSet');
-                    $writer->writeAttribute('elementSetId', $setId);
-                    $writer->startElement('elementContainer');
-                    foreach ($elements as $elementId => $elementTexts) {
-                        $writer->startElement('element');
-                        $writer->writeAttribute('elementId', $elementId);
-                        $elementTextContainer = new Export_OmekaXmlWriter_Container_ElementText($writer, $elementTexts);
-                        $elementTextContainer->writeNode();
-                        $writer->endElement();
-                    }
-                    $writer->endElement();
-                    $writer->endElement();
-                }
-                
-                $writer->endElement();
-            }
+
+            Export_OmekaXmlWriter_Helper_ActsAsElementText::writeElementTexts($writer, $record);
             
             if ($tags = $record->getTags()) {
                 $tagsContainer = new Export_OmekaXmlWriter_Container_Tag($writer, $tags);

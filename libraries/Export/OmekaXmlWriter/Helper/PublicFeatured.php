@@ -7,7 +7,7 @@
  */
 class Export_OmekaXmlWriter_Helper_PublicFeatured
 {
-    static public function addAttributes($writer, $record) {
+    static public function writeAttributes($writer, $record) {
         if ($record->isPublic()) {
             $publicValue = 'true';
         } else {
