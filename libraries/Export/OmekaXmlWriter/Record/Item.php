@@ -41,17 +41,4 @@ class Export_OmekaXmlWriter_Record_Item extends Export_OmekaXmlWriter_Record {
         
         $writer->endElement();
     }
-    
-    private function getElementTextsBySetAndElementIds($record) {
-        $elementTexts = array();
-        foreach ($record->getAllElementsBySet() as $setName => $elements) {
-            $elementSet = get_db()->getTable('ElementSet')->findByName($setName);
-            foreach ($elements as $element) {
-                foreach ($record->getTextsByElement($element) as $elementText) {
-                    $elementTexts[$elementSet->id][$element->id][] = $elementText;
-                }
-            }
-        }
-        return $elementTexts;
-    }
 }
